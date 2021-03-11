@@ -51,3 +51,6 @@ Bonus Points
 -  ???
 
 ```
+
+### Sample expectation:
+![requirements](req.jpg)
