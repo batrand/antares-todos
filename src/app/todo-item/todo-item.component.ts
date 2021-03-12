@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { nanoid } from 'nanoid';
 import { TodoItem } from 'src/models/TodoItem';
 import { TodoStatus } from 'src/models/TodoStatus';
@@ -9,11 +9,9 @@ import { TodoStatus } from 'src/models/TodoStatus';
   styleUrls: ['./todo-item.component.css']
 })
 export class TodoItemComponent implements OnInit {
-  item: TodoItem;
+  @Input() item: TodoItem = TodoItem.defaultItem();
 
-  constructor() { 
-    this.item = new TodoItem(nanoid(7), "Test title", new Date(),  TodoStatus.NotStarted)
-  }
+  constructor() { }
 
   ngOnInit(): void {
   }
