@@ -1,30 +1,60 @@
+import { Injectable } from "@angular/core";
+import { nanoid } from "nanoid";
 import { TodoItem } from "src/models/TodoItem";
 
+
+@Injectable({
+    providedIn: 'root'
+})
 export class TodoService {
-    private todoList: Array<TodoItem> = []   
+
+    private observers: {[id: string]: ITodoObserver} = {}
+    public addObserver(observer: ITodoObserver): string {
+        let observerId = nanoid(7)
+        this.observers[observerId] = observer
+        return observerId
+    }
+    public removeObserver(id: string) {
+        if(id in this.observers) {
+            delete this.observers[id]
+        }
+    }
+    public notifyObserversItemChanged(item: TodoItem) {
+        for(let id in this.observers) {
+            let observer = this.observers[id]
+            observer.onItemChanged(item)
+        }
+    }
+    public notifyObserversItemRemoved(itemId: string) {
+        for(let id in this.observers) {
+            let observer = this.observers[id]
+            observer.onItemRemoved(itemId)
+        }
+    }
     
+    private todoList: {[id: string]: TodoItem} = {}
+
     public add(item: TodoItem) {
-        let existingIndex = this.todoList.findIndex(t => t.id == item.id)
-        
-        if (existingIndex == -1) {
-            this.todoList.push(item)
-        }
-
-        // If is the same, replace item
-        else {
-            this.todoList[existingIndex] = item
-        }
-
-        // TODO: emit changed
+        this.todoList[item.id] = item
+        this.notifyObserversItemChanged(item)
     }
 
     public remove(id: string) {
-        let existingIndex = this.todoList.findIndex(t => t.id == id)
-        
-        if (existingIndex != -1) {
-            this.todoList.splice(existingIndex, 1)
+        if(id in this.todoList) {
+            delete this.todoList[id]
+            this.notifyObserversItemRemoved(id)
         }
-
-        // TODO: emit changed
     }
+
+    public getItem(id: string): TodoItem|null {
+        if(id in this.todoList) {
+            return this.todoList[id]
+        }
+        else return null
+    }
+}
+
+export interface ITodoObserver {
+    onItemChanged(item: TodoItem): void;
+    onItemRemoved(id: string): void;
 }
