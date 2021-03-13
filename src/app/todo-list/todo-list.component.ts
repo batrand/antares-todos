@@ -11,7 +11,7 @@ import { TodoItemComponent } from '../todo-item/todo-item.component';
   styleUrls: ['./todo-list.component.css']
 })
 export class TodoListComponent implements OnInit, OnDestroy, ITodoObserver {
-  private todoService: TodoService
+  private todoService: TodoService;
 
   constructor(todoService: TodoService) {
     this.todoService = todoService;
@@ -22,21 +22,21 @@ export class TodoListComponent implements OnInit, OnDestroy, ITodoObserver {
   // but not sure how to not do this without data binding.
   // The copy here is for now just for rendering purposes,
   // the source of truth is in TodoService.
-  todoList: {[id: string]: TodoItem} = {}
+  todoList: {[id: string]: TodoItem} = {};
 
-  private observerId: string = ""
+  private observerId: string = "";
   onItemChanged(item: TodoItem) {
-    this.todoList[item.id] = item
+    this.todoList[item.id] = item;
   }
   onItemRemoved(itemId: string) {
-    delete this.todoList[itemId]
+    delete this.todoList[itemId];
   }
 
   ngOnInit(): void {
-    this.observerId = this.todoService.addObserver(this)
+    this.observerId = this.todoService.addObserver(this);
   }
 
   ngOnDestroy(): void {
-    this.todoService.removeObserver(this.observerId)
+    this.todoService.removeObserver(this.observerId);
   }
 }

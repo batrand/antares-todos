@@ -36,7 +36,7 @@ export class NewItemComponent implements OnInit {
   }
 
   addItem() {
-    console.log(`Called add item, ${this.newTitle} ${this.newStatus} ${this.newDue}`)
+    console.log(`Called add item, ${this.newTitle} ${this.newStatus} ${this.newDue}`);
     let newItem = new TodoItem(this.newTitle, this.newDue, this.newStatus as TodoStatus);
     console.log(`New item: ${newItem}`);
     this.todoService.add(newItem);
@@ -46,8 +46,8 @@ export class NewItemComponent implements OnInit {
     return (control: AbstractControl): {[error: string]: boolean}|null => {
       let datetime = control.value as Date;
       let now = new Date();
-      if (datetime < now) return {"Cannot set due date in the past": true}
-      return null
+      if (datetime < now) return {"Cannot set due date in the past": true};
+      return null;
     }
   }
 }

@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { nanoid } from 'nanoid';
 import { TodoItem } from 'src/models/TodoItem';
-import { TodoStatus } from 'src/models/TodoStatus';
 import { TodoService } from 'src/services/TodoService';
 
 @Component({
@@ -12,7 +10,7 @@ import { TodoService } from 'src/services/TodoService';
 export class TodoItemComponent implements OnInit {
   @Input() item: TodoItem = TodoItem.defaultItem();
 
-  private todoService: TodoService
+  private todoService: TodoService;
   constructor(todoService: TodoService) {
     this.todoService = todoService;
   }
@@ -20,6 +18,6 @@ export class TodoItemComponent implements OnInit {
   ngOnInit(): void {}
 
   deleteItem() {
-    this.todoService.remove(this.item.id)
+    this.todoService.remove(this.item.id);
   }
 }
