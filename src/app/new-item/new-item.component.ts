@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { TodoItem } from 'src/models/TodoItem';
 import { TodoStatus, TodoStatusLabels } from 'src/models/TodoStatus';
 import { TodoService } from 'src/services/TodoService';
@@ -17,8 +17,11 @@ export class NewItemComponent implements OnInit {
   public newStatus: string = this.statusLabels[TodoStatus.NotStarted]; // Haven't figured out how to do 2way enum binding
   public newDue: Date = new Date();
 
-  public datetimeControl = new FormControl();
-  public minDateTime = Date(); // cannot create Todos in the past
+  public itemForm = new FormGroup({
+    titleFormControl: new FormControl(),
+    statusFormControl: new FormControl(),
+    dueFormControl: new FormControl('', [this.validateTimeNotInThePast(this.newDue)])
+  });
 
   private todoService: TodoService;
 
@@ -27,6 +30,9 @@ export class NewItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Put tomorrow as default due date
+    this.newDue = new Date();
+    this.newDue.setDate(this.newDue.getDate() + 1);
   }
 
   addItem() {
@@ -36,4 +42,12 @@ export class NewItemComponent implements OnInit {
     this.todoService.add(newItem);
   }
 
+  validateTimeNotInThePast(due: Date): ValidatorFn {
+    return (control: AbstractControl): {[error: string]: boolean}|null => {
+      let datetime = control.value as Date;
+      let now = new Date();
+      if (datetime < now) return {"Cannot set due date in the past": true}
+      return null
+    }
+  }
 }
