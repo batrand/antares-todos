@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button'; 
+import { MatChipsModule } from '@angular/material/chips'; 
 import { MatDatepickerModule } from '@angular/material/datepicker'; 
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatNativeDateModule } from '@angular-material-components/datetime-picker'
@@ -36,6 +37,7 @@ import { NgxMatNativeDateModule } from '@angular-material-components/datetime-pi
     MatCardModule,
     MatSelectModule,
     MatButtonModule,
+    MatChipsModule,
     MatDatepickerModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule

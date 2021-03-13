@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { nanoid } from 'nanoid';
 import { TodoItem } from 'src/models/TodoItem';
 import { TodoStatus } from 'src/models/TodoStatus';
+import { TodoService } from 'src/services/TodoService';
 
 @Component({
   selector: 'todo-item',
@@ -11,9 +12,14 @@ import { TodoStatus } from 'src/models/TodoStatus';
 export class TodoItemComponent implements OnInit {
   @Input() item: TodoItem = TodoItem.defaultItem();
 
-  constructor() { }
-
-  ngOnInit(): void {
+  private todoService: TodoService
+  constructor(todoService: TodoService) {
+    this.todoService = todoService;
   }
 
+  ngOnInit(): void {}
+
+  deleteItem() {
+    this.todoService.remove(this.item.id)
+  }
 }
